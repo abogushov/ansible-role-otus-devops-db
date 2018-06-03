@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
 - name: instance-travis
-  zone: europe-west1-c
+  zone: europe-west4-c
   machine_type: f1-micro
   image: ubuntu-1604-xenial-v20170919
 provisioner:
