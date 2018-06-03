@@ -18,8 +18,8 @@ before_install:
 - chmod 0600 /home/travis/.ssh/google_compute_engine
 
 install:
-- pip install ansible>=2.5 molecule apache-libcloud ansible-lint apache-libcloud testinfra
-
+- pip install ansible>=2.5 molecule apache-libcloud ansible-lint testinfra
+  PyCrypto
 script:
 - molecule --debug create
 - molecule --debug converge
