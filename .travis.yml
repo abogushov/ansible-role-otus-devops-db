@@ -1,6 +1,9 @@
 language: python
 python:
-- '2.7'
+- '3.6'
+
+install:
+  - pip install ansible==2.3.0 molecule apache-libcloud
 
 env:
   matrix:
@@ -10,20 +13,16 @@ env:
   - secure: dMYumRF8xnQ0kcjKgjCS6K04gMdbwcqaMcRsCkAq9ZQ8RtVCW2lYn0ctFj6YGloZHoSU56DSo676k7p9+WE6yMtnmqmDv2aDTuAyQpxqqDplyf/DERCOB9iXcRG80NH2Q6AmZB1FV/Vx+zJNXp1/vzrRDq84ztfbu2C95djgG7Y4dAiYyTCDLmEOgtPDgOc83VU/hqKrnkhUeqTa/GLsazFjJkyI04zx+5qqcTQHZIh/lL4VuY+cOw0pcF/H7OeKif3m3B7S82pGgGL4LFuWRe2MbQStGT6Nz2htg2sekj/cFzoHG7rHbtSkCz21OeWI+nUXFkIBKjq+jN22FVZwtR6wl5/CizO1qTf0+51OaZeOpqQAoUyR1dN7VJlmqQ/6wCx6ROXmC/Hm9KJcHveMCqqjRSi6JqLcmxacs4IfXU4jzdI2+/bMve8Umy2jH+zywrmZpdMrVCxSj83/NwWyjFBhUYQiG7FBd3Vcde8kkwJ12ZLhiT2o+w+4XzOljypiPKhFqEjr3zXUWsW9ivr/lO+KovplP7CS+1a6OORm/l9isETIFN5sckNiqWBYpSZo2tEib79Caae5IVA0tbE964pqu5CIVXTYEILeQ/amZLuNKtnl1NT04btScXbCQBbKC2eQU3pUxhVhpPz6i6uIFMSCFF/8dW6A5+piYKYlp70=
   - secure: Y3P9pb/Jg1sV+qXgZOqPgZ0In5GAYd71hF83TqAHe16gP16G5e4fdmo3CwG4NpoRCbHMbNC7XtRLZi1LG71V1SFHNpcJei4wQDsVtQgAtTjlEbVmVa+PGfnOOzBdNw6G8M1T3/zYRWjiDNq2xa9OyAwt7OqzC+SFxQdCgyLNWk6VkLsbUONm9abMTtXfAZqWDXSC0bXQ7VBvJrzHiwvLPxt1xXwohpkXFeGnN//ZmWgLWm9oTF2hboE0Er2XI+Ov5G+TIqTkYbAz3Jgowd/FfzLgMkY1uX6EvOx8Y8P9T9ScDfnPuyUIc9kHrEg3Sv9u+OUyKrPvB47sVT6zqdsdDQ+7VTEfBAIyMypyy7xT2gg9MAqWrKsgljoi87qTrPQ1PJHb80MHgwZ658nslrqhSBe3843Xu+DMZFQd2SA2uf/TFZk66KBBkR88WYCEjva4TjsXnAja4h9XrhPo8M74kAaPvAta7sT1keHFDzVpKEPRKtlHy4nNDZ/NiZJtb+f/l1ENt0E+slSazRKWwMZo4cQcaGFW2yyeaoHbmows0ZqxxbjcwKXs/fv1/8AGVAYIrb0dRN4Wld4QYhVBv1gA6qWEzA6k6eJFh1j9yPo6ugpzG5bLgTZC9gLwG+K3NLK1l8lXVrBVahZJfG0vwfWyeda5VPz7pY4xtYgWIFJ/RVg=
 
+script:
+- molecule create
+- molecule converge
+- molecule verify
+after_script:
+- molecule destroy
+
 before_install:
 - openssl aes-256-cbc -K $encrypted_f9a216f39c33_key -iv $encrypted_f9a216f39c33_iv
   -in secrets.tar.enc -out secrets.tar -d
 - tar xvf secrets.tar
 - mv google_compute_engine /home/travis/.ssh/
 - chmod 0600 /home/travis/.ssh/google_compute_engine
-
-install:
-- pip install ansible>=2.5 molecule apache-libcloud ansible-lint testinfra
-  PyCrypto
-script:
-- molecule --debug create
-- molecule --debug converge
-- molecule --debug verify
-
-after_script:
-- molecule --debug destroy
